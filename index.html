@@ -15,6 +15,25 @@
         document.getElementById("message").innerHTML = "You Lose!";
       }
     }
+
+    function startTour() {
+      var steps = ["Roll the dice", "Place your bet", "Spin the wheel", "Play the slots"];
+      var currentStep = 0;
+      document.getElementById("tourMessage").innerHTML = "Welcome to the tour! Let's start with: " + steps[currentStep];
+      document.getElementById("tourButton").innerHTML = "Next";
+    }
+
+    function nextStep() {
+      var steps = ["Roll the dice", "Place your bet", "Spin the wheel", "Play the slots"];
+      var currentStep = 0;
+      currentStep++;
+      if (currentStep == steps.length) {
+        document.getElementById("tourMessage").innerHTML = "Tour complete! Enjoy the games!";
+        document.getElementById("tourButton").style.display = "none";
+      } else {
+        document.getElementById("tourMessage").innerHTML = "Next step: " + steps[currentStep];
+      }
+    }
   </script>
 </head>
 
@@ -28,6 +47,14 @@
   <p>Dice 2: <span id="dice2">0</span></p>
   <br>
   <p id="message">Good luck!</p>
+  <br>
+  <br>
+  <p>Take a tour of the casino:</p>
+  <button onclick="startTour()">Start Tour</button>
+  <br>
+  <br>
+  <p id="tourMessage">Ready to start the tour?</p>
+  <button id="tourButton" onclick="nextStep()" style="display: none;">Next</button>
 </body>
 
 </html>
