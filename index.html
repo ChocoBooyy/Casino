@@ -3,6 +3,53 @@
 
 <head>
   <title>Casino</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .games {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 50px;
+    }
+
+    .game {
+      width: 300px;
+      height: 300px;
+      background-color: lightgray;
+      border: 1px solid black;
+      border-radius: 10px;
+      text-align: center;
+      padding-top: 50px;
+      margin: 20px;
+    }
+
+    .game h2 {
+      margin-top: 0;
+    }
+
+    .tour {
+      width: 600px;
+      height: 300px;
+      background-color: lightgray;
+      border: 1px solid black;
+      border-radius: 10px;
+      text-align: center;
+      padding-top: 50px;
+      margin: 20px auto;
+    }
+
+    .tour h2 {
+      margin-top: 0;
+    }
+  </style>
   <script>
     function rollDice() {
       var dice1 = Math.floor(Math.random() * 6) + 1;
@@ -39,22 +86,31 @@
 
 <body>
   <h1>Casino</h1>
-  <p>Roll the dice to see if you win or lose:</p>
-  <button onclick="rollDice()">Roll Dice</button>
-  <br>
-  <br>
-  <p>Dice 1: <span id="dice1">0</span></p>
-  <p>Dice 2: <span id="dice2">0</span></p>
-  <br>
-  <p id="message">Good luck!</p>
-  <br>
-  <br>
-  <p>Take a tour of the casino:</p>
-  <button onclick="startTour()">Start Tour</button>
-  <br>
-  <br>
-  <p id="tourMessage">Ready to start the tour?</p>
-  <button id="tourButton" onclick="nextStep()" style="display: none;">Next</button>
+  <div class="games">
+    <div class="game">
+      <h2>Roll the Dice</h2>
+      <button onclick="rollDice()">Roll Dice</button>
+      <p>Dice 1: <span id="dice1">0</span></p>
+      <p>Dice 2: <span id="dice2">0</span></p>
+      <p id="message"></p>
+        </div>
+        <div class="game">
+          <h2>Place Your Bet</h2>
+        </div>
+        <div class="game">
+          <h2>Spin the Wheel</h2>
+        </div>
+        <div class="game">
+          <h2>Play the Slots</h2>
+      </div>
+  </div>
+  <div class="tour">
+    <h2>Take a Tour</h2>
+    <p id="tourMessage">Welcome to the tour! Press the button to start.</p>
+    <button id="tourButton" onclick="startTour()">Start Tour</button>
+    <button onclick="nextStep()">Next</button>
+  </div>
 </body>
 
 </html>
+
