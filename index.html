@@ -2,115 +2,90 @@
 <html>
 
 <head>
-  <title>Casino</title>
+  <title>Tower Game</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    .games {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
       margin-top: 50px;
     }
 
     .game {
-      width: 300px;
+      margin-top: 50px;
+      display: inline-block;
+    }
+
+    .tower {
+      width: 50px;
       height: 300px;
       background-color: lightgray;
       border: 1px solid black;
       border-radius: 10px;
-      text-align: center;
-      padding-top: 50px;
-      margin: 20px;
+      display: inline-block;
+      margin: 0 50px;
+      position: relative;
     }
 
-    .game h2 {
-      margin-top: 0;
-    }
-
-    .tour {
-      width: 600px;
-      height: 300px;
-      background-color: lightgray;
+    .disk {
+      width: 50px;
+      height: 50px;
+      background-color: lightblue;
       border: 1px solid black;
       border-radius: 10px;
-      text-align: center;
-      padding-top: 50px;
-      margin: 20px auto;
-    }
-
-    .tour h2 {
-      margin-top: 0;
+      position: absolute;
+      bottom: 0;
     }
   </style>
   <script>
-    function rollDice() {
-      var dice1 = Math.floor(Math.random() * 6) + 1;
-      var dice2 = Math.floor(Math.random() * 6) + 1;
-      document.getElementById("dice1").innerHTML = dice1;
-      document.getElementById("dice2").innerHTML = dice2;
-      if (dice1 == dice2) {
-        document.getElementById("message").innerHTML = "You Win!";
-      } else {
-        document.getElementById("message").innerHTML = "You Lose!";
+    var towers = [[], [], []];
+    var diskCount = 3;
+
+    function startGame() {
+      for (var i = diskCount; i > 0; i--) {
+        towers[0].push(i);
+      }
+      renderTowers();
+    }
+
+    function renderTowers() {
+      for (var i = 0; i < 3; i++) {
+        var tower = document.getElementById("tower" + i);
+        tower.innerHTML = "";
+        for (var j = 0; j < towers[i].length; j++) {
+          var disk = document.createElement("div");
+          disk.className = "disk";
+          disk.style.width = (towers[i][j] * 50) + "px";
+          tower.appendChild(disk);
+        }
       }
     }
 
-    function startTour() {
-      var steps = ["Roll the dice", "Place your bet", "Spin the wheel", "Play the slots"];
-      var currentStep = 0;
-      document.getElementById("tourMessage").innerHTML = "Welcome to the tour! Let's start with: " + steps[currentStep];
-      document.getElementById("tourButton").innerHTML = "Next";
-    }
-
-    function nextStep() {
-      var steps = ["Roll the dice", "Place your bet", "Spin the wheel", "Play the slots"];
-      var currentStep = 0;
-      currentStep++;
-      if (currentStep == steps.length) {
-        document.getElementById("tourMessage").innerHTML = "Tour complete! Enjoy the games!";
-        document.getElementById("tourButton").style.display = "none";
-      } else {
-        document.getElementById("tourMessage").innerHTML = "Next step: " + steps[currentStep];
-      }
+    function moveDisk(from, to) {
+      var disk = towers[from].pop();
+      towers[to].push(disk);
+      renderTowers();
     }
   </script>
 </head>
 
-<body>
-  <h1>Casino</h1>
-  <div class="games">
-    <div class="game">
-      <h2>Roll the Dice</h2>
-      <button onclick="rollDice()">Roll Dice</button>
-      <p>Dice 1: <span id="dice1">0</span></p>
-      <p>Dice 2: <span id="dice2">0</span></p>
-      <p id="message"></p>
-        </div>
-        <div class="game">
-          <h2>Place Your Bet</h2>
-        </div>
-        <div class="game">
-          <h2>Spin the Wheel</h2>
-        </div>
-        <div class="game">
-          <h2>Play the Slots</h2>
-      </div>
+<body onload="startGame()">
+  <h1>Tower Game</h1>
+  <div class="game">
+    <div class="tower" id="tower0"></div>
+    <div class="tower" id="tower1"></div>
+    <div class="tower" id="tower2"></div>
   </div>
-  <div class="tour">
-    <h2>Take a Tour</h2>
-    <p id="tourMessage">Welcome to the tour! Press the button to start.</p>
-    <button id="tourButton" onclick="startTour()">Start Tour</button>
-    <button onclick="nextStep()">Next</button>
-  </div>
+  <p>
+    <button onclick="moveDisk(0, 1)">Move 0 to 1</button>
+    <button onclick="moveDisk(0, 2)">Move 0 to 2</button>
+    <button onclick="moveDisk(1, 0)">Move 1 to 0</button>
+    <button onclick="moveDisk(1, 2)">Move 1 to 2</button>
+    <button onclick="moveDisk(2, 0)">Move 2 to 0</button>
+    <button onclick="moveDisk(2, 1)">Move 2 to 1</button>
+  </p>
 </body>
 
 </html>
-
