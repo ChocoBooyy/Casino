@@ -1,62 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Mines</title>
-  </head>
-  <body>
-    <h1>Mines</h1>
-    <table>
-      <tr>
-        <td><button onclick="reveal(0,0)">?</button></td>
-        <td><button onclick="reveal(0,1)">?</button></td>
-        <td><button onclick="reveal(0,2)">?</button></td>
-      </tr>
-      <tr>
-        <td><button onclick="reveal(1,0)">?</button></td>
-        <td><button onclick="reveal(1,1)">?</button></td>
-        <td><button onclick="reveal(1,2)">?</button></td>
-      </tr>
-      <tr>
-        <td><button onclick="reveal(2,0)">?</button></td>
-        <td><button onclick="reveal(2,1)">?</button></td>
-        <td><button onclick="reveal(2,2)">?</button></td>
-      </tr>
-    </table>
+    <head>
+        <title>Mines</title>
+    </head>
+    <body>
+        <h1>Mines</h1>
+        <table>
+            <tr>
+                <td><button onclick="reveal(0,0)">?</button></td>
+                <td><button onclick="reveal(0,1)">?</button></td>
+                <td><button onclick="reveal(0,2)">?</button></td>
+                <td><button onclick="reveal(0,3)">?</button></td>
+                <td><button onclick="reveal(0,4)">?</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="reveal(1,0)">?</button></td>
+                <td><button onclick="reveal(1,1)">?</button></td>
+                <td><button onclick="reveal(1,2)">?</button></td>
+                <td><button onclick="reveal(1,3)">?</button></td>
+                <td><button onclick="reveal(1,4)">?</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="reveal(2,0)">?</button></td>
+                <td><button onclick="reveal(2,1)">?</button></td>
+                <td><button onclick="reveal(2,2)">?</button></td>
+                <td><button onclick="reveal(2,3)">?</button></td>
+                <td><button onclick="reveal(2,4)">?</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="reveal(3,0)">?</button></td>
+                <td><button onclick="reveal(3,1)">?</button></td>
+                <td><button onclick="reveal(3,2)">?</button></td>
+                <td><button onclick="reveal(3,3)">?</button></td>
+                <td><button onclick="reveal(3,4)">?</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="reveal(4,0)">?</button></td>
+                <td><button onclick="reveal(4,1)">?</button></td>
+                <td><button onclick="reveal(4,2)">?</button></td>
+                <td><button onclick="reveal(4,3)">?</button></td>
+                <td><button onclick="reveal(4,4)">?</button></td>
+            </tr>
+        </table>
 
-    <script>
-      var board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-      var mines = 3;
-      var revealedSquares = 0;
+        <script>
+            var board = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]];
+            var mines = 3;
+            var revealedSquares = 0;
 
-      function reveal(x, y) {
-        if (board[x][y] === 1) {
-          alert("Game over!");
-          location.reload();
-        }
-        if (board[x][y] === 0) {
-          board[x][y] = 2;
-          document.getElementsByTagName("button")[x * 3 + y].style.backgroundColor = "white";
-          revealedSquares++;
-          if (revealedSquares === 6 - mines) {
-            alert("You win!");
-            location.reload();
-          }
-        }
-      }
+            // Place mines randomly on the board
+            for (var i = 0; i < mines; i++) {
+            var x = Math.floor(Math.random() * 5);
+            var y = Math.floor(Math.random() * 5);
+            board[x][y] = 1;
+            }
 
-      function placeMines() {
-        for (var i = 0; i < mines; i++) {
-          var x = Math.floor(Math.random() * 3);
-          var y = Math.floor(Math.random() * 3);
-          while (board[x][y] === 1) {
-            x = Math.floor(Math.random() * 3);
-            y = Math.floor(Math.random() * 3);
-          }
-          board[x][y] = 1;
-        }
-      }
-
-      placeMines();
-    </script>
-  </body>
+            function reveal(x, y) {
+                if (board[x][y] === 1) {
+                    alert("Game over!");
+                    location.reload();
+                }
+                if (board[x][y] === 0) {
+                    board[x][y] = 2;
+                    document.getElementsByTagName("button")[x * 5 + y].style.backgroundColor = "white";
+                    revealedSquares++;
+                    if (revealedSquares === 22 - mines) {
+                    alert("You win!");
+                    location.reload();
+                    }
+                }
+            }
+        </script>
+    </body>
 </html>

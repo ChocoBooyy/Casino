@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Dice Game</title>
-  </head>
-  <body>
-    <h1>Dice Game</h1>
-    <p id="diceRoll"></p>
-    <button onclick="rollDice()">Roll Dice</button>
-    <script>
-      function rollDice() {
-        var diceRoll = Math.floor(Math.random() * 6) + 1;
-        document.getElementById("diceRoll").textContent = "You rolled a " + diceRoll + "!";
-      }
-    </script>
-  </body>
+    <head>
+        <title>Dice Game</title>
+    </head>
+    <body>
+        <h1>Dice Game</h1>
+        <p id="diceRoll"></p>
+        <button onclick="rollDice()">Roll Dice</button>
+        
+        <script>
+            function rollDice() {
+                var diceRoll = Math.floor(Math.random() * 6) + 1;
+                document.getElementById("diceRoll").textContent = "You rolled a " + diceRoll + "!";
+            }
+        </script>
+    </body>
 </html>
