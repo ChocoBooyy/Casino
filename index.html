@@ -1,91 +1,117 @@
-<!DOCTYPE html>
 <html>
-
-<head>
-  <title>Tower Game</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-
-    h1 {
-      margin-top: 50px;
-    }
-
-    .game {
-      margin-top: 50px;
-      display: inline-block;
-    }
-
-    .tower {
-      width: 50px;
-      height: 300px;
-      background-color: lightgray;
-      border: 1px solid black;
-      border-radius: 10px;
-      display: inline-block;
-      margin: 0 50px;
-      position: relative;
-    }
-
-    .disk {
-      width: 50px;
-      height: 50px;
-      background-color: lightblue;
-      border: 1px solid black;
-      border-radius: 10px;
-      position: absolute;
-      bottom: 0;
-    }
-  </style>
-  <script>
-    var towers = [[], [], []];
-    var diskCount = 3;
-
-    function startGame() {
-      for (var i = diskCount; i > 0; i--) {
-        towers[0].push(i);
-      }
-      renderTowers();
-    }
-
-    function renderTowers() {
-      for (var i = 0; i < 3; i++) {
-        var tower = document.getElementById("tower" + i);
-        tower.innerHTML = "";
-        for (var j = 0; j < towers[i].length; j++) {
-          var disk = document.createElement("div");
-          disk.className = "disk";
-          disk.style.width = (towers[i][j] * 50) + "px";
-          tower.appendChild(disk);
+  <head>
+    <title>Blackjack Game</title>
+  </head>
+  <body>
+    <h1>Blackjack Game</h1>
+    <button onclick="deal()">Deal</button>
+    <button onclick="hit()">Hit</button>
+    <button onclick="stand()">Stand</button>
+    <p id="playerCards"></p>
+    <p id="dealerCards"></p>
+    <p id="result"></p>
+    <script>
+      var deck = [];
+      var playerCards = [];
+      var dealerCards = [];
+      function createDeck() {
+        var suits = ["Hearts", "Diamonds", "Clubs", "Spades"];
+        var ranks = ["Ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King"];
+        for (var i = 0; i < suits.length; i++) {
+          for (var j = 0; j < ranks.length; j++) {
+            deck.push(ranks[j] + " of " + suits[i]);
+          }
         }
       }
-    }
-
-    function moveDisk(from, to) {
-      var disk = towers[from].pop();
-      towers[to].push(disk);
-      renderTowers();
-    }
-  </script>
-</head>
-
-<body onload="startGame()">
-  <h1>Tower Game</h1>
-  <div class="game">
-    <div class="tower" id="tower0"></div>
-    <div class="tower" id="tower1"></div>
-    <div class="tower" id="tower2"></div>
-  </div>
-  <p>
-    <button onclick="moveDisk(0, 1)">Move 0 to 1</button>
-    <button onclick="moveDisk(0, 2)">Move 0 to 2</button>
-    <button onclick="moveDisk(1, 0)">Move 1 to 0</button>
-    <button onclick="moveDisk(1, 2)">Move 1 to 2</button>
-    <button onclick="moveDisk(2, 0)">Move 2 to 0</button>
-    <button onclick="moveDisk(2, 1)">Move 2 to 1</button>
-  </p>
-</body>
-
+      function deal() {
+        createDeck();
+        shuffleDeck();
+        playerCards.push(deck.shift());
+        dealerCards.push(deck.shift());
+        playerCards.push(deck.shift());
+        dealerCards.push(deck.shift());
+        displayCards();
+      }
+      function shuffleDeck() {
+        for (var i = 0; i < deck.length; i++) {
+          var j = Math.floor(Math.random() * deck.length);
+          var temp = deck[i];
+          deck[i] = deck[j];
+          deck[j] = temp;
+        }
+      }
+      function displayCards() {
+        var playerCardsText = "Player Cards: ";
+        for (var i = 0; i < playerCards.length; i++) {
+          playerCardsText += playerCards[i] + " ";
+        }
+        var dealerCardsText = "Dealer Cards: ";
+        for (var i = 0; i < dealerCards.length; i++) {
+          dealerCardsText += dealerCards[i] + " ";
+        }
+        document.getElementById("playerCards").textContent = playerCardsText;
+        document.getElementById("dealerCards").textContent = dealerCardsText;
+      }
+      function hit() {
+        playerCards.push(deck.shift());
+        displayCards();
+        checkForBust();
+      }
+      function stand() {
+        while (calculateHandValue(dealerCards) < 17) {
+          dealerCards.push(deck.shift());
+          displayCards();
+          checkForBust();
+        }
+        checkWinner();
+      }
+      function calculateHandValue(cards) {
+        var value = 0;
+        var hasAce = false;
+        for (var i = 0; i < cards.length; i++) {
+          var cardValue = cards[i].split(" ")[0];
+          if (cardValue === "Ace") {
+            hasAce = true;
+          }
+          if (isNaN(cardValue)) {
+            value += 10;
+          } else {
+            value += parseInt(cardValue);
+          }
+        }
+        if (hasAce && value + 10 <= 21) {
+          value += 10;
+        }
+        return value;
+      }
+      function checkForBust() {
+        if (calculateHandValue(playerCards) > 21) {
+          document.getElementById("result").textContent = "Player busts, dealer wins!";
+        }
+        if (calculateHandValue(dealerCards) > 21) {
+          document.getElementById("result").textContent = "Dealer busts, player wins!";
+        }
+      }
+      function checkWinner() {
+        var playerHandValue = calculateHandValue(playerCards);
+        var dealerHandValue = calculateHandValue(dealerCards);
+        if (playerHandValue > 21) {
+          return;
+        }
+        if (dealerHandValue > 21) {
+          document.getElementById("result").textContent = "Dealer busts, player wins!";
+          return;
+        }
+        if (playerHandValue === dealerHandValue) {
+          document.getElementById("result").textContent = "Push!";
+          return;
+        }
+        if (playerHandValue > dealerHandValue) {
+          document.getElementById("result").textContent = "Player wins!";
+        } else {
+          document.getElementById("result").textContent = "Dealer wins!";
+        }
+      }
+    </script>
+  </body>
 </html>
