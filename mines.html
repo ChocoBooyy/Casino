@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Mines</title>
+  </head>
+  <body>
+    <h1>Mines</h1>
+    <table>
+      <tr>
+        <td><button onclick="reveal(0,0)">?</button></td>
+        <td><button onclick="reveal(0,1)">?</button></td>
+        <td><button onclick="reveal(0,2)">?</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="reveal(1,0)">?</button></td>
+        <td><button onclick="reveal(1,1)">?</button></td>
+        <td><button onclick="reveal(1,2)">?</button></td>
+      </tr>
+      <tr>
+        <td><button onclick="reveal(2,0)">?</button></td>
+        <td><button onclick="reveal(2,1)">?</button></td>
+        <td><button onclick="reveal(2,2)">?</button></td>
+      </tr>
+    </table>
+
+    <script>
+      var board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+      var mines = 3;
+      var revealedSquares = 0;
+
+      function reveal(x, y) {
+        if (board[x][y] === 1) {
+          alert("Game over!");
+          location.reload();
+        }
+        if (board[x][y] === 0) {
+          board[x][y] = 2;
+          document.getElementsByTagName("button")[x * 3 + y].style.backgroundColor = "white";
+          revealedSquares++;
+          if (revealedSquares === 6 - mines) {
+            alert("You win!");
+            location.reload();
+          }
+        }
+      }
+
+      function placeMines() {
+        for (var i = 0; i < mines; i++) {
+          var x = Math.floor(Math.random() * 3);
+          var y = Math.floor(Math.random() * 3);
+          while (board[x][y] === 1) {
+            x = Math.floor(Math.random() * 3);
+            y = Math.floor(Math.random() * 3);
+          }
+          board[x][y] = 1;
+        }
+      }
+
+      placeMines();
+    </script>
+  </body>
+</html>
