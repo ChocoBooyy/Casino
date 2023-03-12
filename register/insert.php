@@ -13,6 +13,6 @@ $sql = "INSERT INTO users (`login`, `password`, `role_id`, `gils`) VALUES (?,?,?
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$login, $password, $role_id, $gils]);
 
-header("Location: ../index.html");
+header("Location: ../index.php");
 
 ?>
