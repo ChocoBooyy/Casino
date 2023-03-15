@@ -10,7 +10,11 @@ $pdo = new PDO('mysql:host=localhost;dbname=casino', 'root', 'root');
 
 $pdo->exec('SET NAMES "utf8"');
 
-$users = $pdo->query("SELECT id, FORMAT(gils, 0) AS gils FROM users")->fetchAll(PDO::FETCH_ASSOC);
+$users = $pdo->query("SELECT id, gils FROM users")->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT gils FROM users WHERE id = ?');
+$stmt->execute([$users[0]['id']]);
+$gils = $stmt->fetchColumn();
 
 ?>
 
@@ -48,12 +52,12 @@ $users = $pdo->query("SELECT id, FORMAT(gils, 0) AS gils FROM users")->fetchAll(
             <li class="nav-item">
                 <p class="text-white nav-centered">
                     Gils: 
-                    <?php 
-                        foreach ($users as $user) {
-                            echo $user['gils'];
-                        }
-                    ?>
+                    <?php echo $gils;?>
+                    &ensp;
+                    <a class="btn btn-primary" href="set_gils.php">Set gils to 1 mil</a>
                 </p>
+            </li>
+            <li class="nav-item">
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">

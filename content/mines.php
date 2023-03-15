@@ -2,12 +2,6 @@
 
 include './navbar/index.php';
 
-$_SESSION['bet'] = 0;
-
-$stmt = $pdo->prepare('SELECT gils FROM users WHERE id = ?');
-$stmt->execute([$users[0]['id']]);
-$gils = $stmt->fetchColumn();
-
 $inputBet = isset($_POST['bet']) ? intval($_POST['bet']) : $_SESSION['bet'];
 if ($inputBet > 0 && $gils >= $inputBet) {
     $_SESSION['bet'] = min($inputBet, $gils);
@@ -15,10 +9,10 @@ if ($inputBet > 0 && $gils >= $inputBet) {
     $stmt = $pdo->prepare('UPDATE users SET gils = ? WHERE id = ?');
     $stmt->execute([$gils, $users[0]['id']]);
     $isBetPlaced = true;
-    $_SESSION['bet'] = 0;
+    // $_SESSION['bet'] = 0;
 } else {
     $isBetPlaced = false;
-    echo "<script>alert('Please enter a valid bet value or you do not have enough gils!');</script>";
+    // echo "<script>alert('Please enter a valid bet value or you do not have enough gils!');</script>";
     $_SESSION['bet'] = $inputBet;
 }
 
@@ -30,6 +24,7 @@ if ($inputBet > 0 && $gils >= $inputBet) {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Mines</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body>
         <h1>Mines</h1>
@@ -48,9 +43,10 @@ if ($inputBet > 0 && $gils >= $inputBet) {
                 </td>
             </tr>
         </table>
-
-        <p style="text-align: center">Multiplier: <span id="multiplier"></span></p>
-        <p style="text-align: center">Winnings: <span id="multiplier"></span></p>
+        
+        <p style="text-align: center">Gils: <?php echo $gils ?></p>
+        <p style="text-align: center">Multiplier: <span id="multiplier"><?php echo isset($_SESSION['multiplier']) ? $_SESSION['multiplier'] : ''; ?></span></p>
+        <p style="text-align: center">Winnings: <?php echo $_SESSION['winnings'] ?></p>
 
         <table>
             <?php for ($i = 0; $i < 5; $i++): ?>
@@ -171,10 +167,19 @@ if ($inputBet > 0 && $gils >= $inputBet) {
                     for (var i = 0; i < 25; i++) {
                         document.getElementsByClassName("special")[i].disabled = true; 
                     }     
-                    winnings = revealMultiplier * <?php $bet ?>;
-                    document.getElementById("winnings").innerHTML = winnings;
                     revealMultiplier = 0;
                     document.getElementById("multiplier").textContent = revealMultiplier.toFixed(2);
+                });
+                $.ajax({
+                    url: 'update_multiplier.php',
+                    type: 'POST',
+                    data: { multiplier: revealMultiplier },
+                    success: function() {
+                        console.log('Multiplier updated!');
+                    },
+                    error: function() {
+                        console.log('Error updating multiplier');
+                    }
                 });
             }
         </script>
